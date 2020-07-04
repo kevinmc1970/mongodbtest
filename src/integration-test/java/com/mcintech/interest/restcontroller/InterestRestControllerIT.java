@@ -4,31 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcintech.interest.document.InterestResult;
 import com.mcintech.interest.repository.InterestResultRepository;
 import com.mcintech.interest.request.InterestCalculatorRequest;
-import com.mcintech.interest.service.InterestCalculatorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -78,5 +68,25 @@ public class InterestRestControllerIT {
                 .content(jsonObjectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(content().json("132.00"));
+    }
+
+    @Test
+    public void calculateInterest_missingParam_badRequest() throws Exception {
+        request = new InterestCalculatorRequest(new BigDecimal(6400), null,
+                new BigDecimal(2), new BigDecimal(3));
+        mvc.perform(post("/interest-results")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonObjectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void calculateInterest_paramLessThanZerobadRequest() throws Exception {
+        request = new InterestCalculatorRequest(new BigDecimal(6400), BigDecimal.ZERO,
+                new BigDecimal(2), new BigDecimal(3));
+        mvc.perform(post("/interest-results")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonObjectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
     }
 }

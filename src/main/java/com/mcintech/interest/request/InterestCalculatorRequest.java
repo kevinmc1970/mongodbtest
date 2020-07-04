@@ -1,9 +1,23 @@
 package com.mcintech.interest.request;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class InterestCalculatorRequest {
 
+    @NotNull
+    @Min(value = 1, message = "minimum value is 1.00")
+    private BigDecimal balance;
+    @NotNull
+    @Min(value = 1, message = "minimum value is 1.00")
+    private BigDecimal lowRate;
+    @NotNull
+    @Min(value = 1, message = "minimum value is 1.00")
+    private BigDecimal medRate;
+    @NotNull
+    @Min(value = 1, message = "minimum value is 1.00")
+    private BigDecimal highRate;
 
     public InterestCalculatorRequest() {}
 
@@ -45,10 +59,5 @@ public class InterestCalculatorRequest {
     public void setHighRate(BigDecimal highRate) {
         this.highRate = highRate;
     }
-
-    private BigDecimal balance;
-    private BigDecimal lowRate;
-    private BigDecimal medRate;
-    private BigDecimal highRate;
 
 }
