@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.test</groupId>
-	<artifactId>mongodbtest</artifactId>
+	<artifactId>interestcalculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mongodbtest</name>
+	<name>interestcalculator</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

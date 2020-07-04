@@ -1,13 +1,13 @@
-package com.test.mongodbtest;
+package com.mcintech.interest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MongodbtestApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MongodbtestApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
