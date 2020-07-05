@@ -22,23 +22,35 @@ public class InterestCalculatorService {
 
         BigDecimal result = BigDecimal.ZERO;
 
-        if (balance.compareTo(BigDecimal.ZERO) <=0) {
+        if (isLessThan(balance, BigDecimal.ZERO)) {
             return result;
         }
-        if (balance.compareTo(LOW_BAND) <= 0) {
-            result = result.add(balance.multiply(lowRate.divide(ONE_HUNDRED)));
-        } else if (balance.compareTo(MED_BAND) <= 0) {
-            result = result.add(LOW_BAND.multiply(lowRate.divide(ONE_HUNDRED)));
-            result = result.add(balance.subtract(LOW_BAND).multiply(medRate.divide(ONE_HUNDRED)));
+        if (isLessThan(balance, LOW_BAND)) {
+            result = addInterest(balance, lowRate, result);
+        } else if (isLessThan(balance, MED_BAND)) {
+            result = addInterest(LOW_BAND, lowRate, result);
+            result = addInterest(balance.subtract(LOW_BAND), medRate, result);
         } else {
-            result = result.add(LOW_BAND.multiply(lowRate.divide(ONE_HUNDRED)));
-            result = result.add(MED_BAND.subtract(LOW_BAND).multiply(medRate.divide(ONE_HUNDRED)));
-            result = result.add(balance.subtract(MED_BAND).multiply(highRate.divide(ONE_HUNDRED)));
+            result = addInterest(LOW_BAND, lowRate, result);
+            result = addInterest(MED_BAND.subtract(LOW_BAND), medRate, result);
+            result = addInterest(balance.subtract(MED_BAND), highRate, result);
         }
 
         result = result.setScale(2, RoundingMode.DOWN);
         storeResult(balance, lowRate, medRate, highRate, result);
         return result;
+    }
+
+    private boolean isLessThan(BigDecimal balance, BigDecimal band) {
+        return balance.compareTo(band) <= 0;
+    }
+
+    private BigDecimal addInterest(BigDecimal balance, BigDecimal rate, BigDecimal result) {
+        return result.add(balance.multiply(getPercentile(rate)));
+    }
+
+    private BigDecimal getPercentile(BigDecimal lowRate) {
+        return lowRate.divide(ONE_HUNDRED);
     }
 
     private void storeResult(BigDecimal balance, BigDecimal lowRate, BigDecimal medRate, BigDecimal highRate, BigDecimal result) {
