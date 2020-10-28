@@ -61,7 +61,7 @@ public class InterestCalculatorService {
     }
 
     public void store(MultipartFile file) throws IOException {
-        File path = new File("C:\\Users\\barnh\\savedFile.jpg");
+        File path = new File("C:\\Users\\barnh\\" + file.getOriginalFilename());
         file.transferTo(path);
     }
 }
