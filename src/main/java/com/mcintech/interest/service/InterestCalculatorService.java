@@ -4,7 +4,10 @@ import com.mcintech.interest.document.InterestResult;
 import com.mcintech.interest.repository.InterestResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -55,5 +58,10 @@ public class InterestCalculatorService {
 
     private void storeResult(BigDecimal balance, BigDecimal lowRate, BigDecimal medRate, BigDecimal highRate, BigDecimal result) {
         interestResultRepository.save(new InterestResult(balance, lowRate, medRate, highRate, result));
+    }
+
+    public void store(MultipartFile file) throws IOException {
+        File path = new File("C:\\Users\\barnh\\savedFile.jpg");
+        file.transferTo(path);
     }
 }
